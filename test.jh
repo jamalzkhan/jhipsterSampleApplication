@@ -1,0 +1,53 @@
+entity User {
+	firstName String
+    lastName String
+    email String
+    countryCode String
+    phoneNumber String
+    password String
+}
+
+entity Wallet {
+	currency String
+    amountCents Integer
+}
+
+entity Transaction {
+	currency String
+    amountCents Integer
+    description String
+    dateTransacted Time
+    type TransactionType
+}
+
+entity KYC {
+	countryCode String
+	passportImageUrl String
+    identityCardUrl String
+}
+
+enum TransactionType {
+	DEBIT, CREDIT, CHECK
+}
+
+relationship OneToMany {
+	User{wallet} to Wallet
+}
+
+relationship OneToMany {
+	Wallet{transactions} to Transaction
+}
+
+relationship OneToOne {
+	Wallet{kyc} to KYC
+}
+
+// Set pagination options
+paginate Transaction with pagination
+
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl except Wallet
+// Set an angular suffix
+angularSuffix * with mySuffix
